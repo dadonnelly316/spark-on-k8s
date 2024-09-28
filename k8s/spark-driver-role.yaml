@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: spark-driver-role
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get", "list", "create", "edit", "delete"]
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["services", "configmaps"]
+  verbs: ["create"]
+
+
+ 

@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: spark-driver-service-account-role-binding
+  namespace: default
+subjects:
+- kind: User
+  name: spark-driver-account
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: spark-driver-role
+  apiGroup: rbac.authorization.k8s.io
