@@ -1,3 +1,3 @@
-Directory where Dockerfiles expect to find dependencies downloaded from Maven.
+This directory is where the Dockerfile expects to find jar dependencies. The script that builds the Docker images will fetch dependencies and store them here, and then the Dockerfile will pick them up from this directory.
 
-This project ships with utility scripts that will download those jars to this folder.
+We download jars here because maven should be installed in your CI/CD environment. It's not needed at runtime.

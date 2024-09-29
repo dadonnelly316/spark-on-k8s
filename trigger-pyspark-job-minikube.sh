@@ -1,4 +1,15 @@
 #!/bin/sh
+set -e
+
+RED='\033[0;31m' 
+NC='\033[0m'
+
+if [ -e ./spark-binaries/bin/spark-submit ]; then
+    echo "spark-submit was found!"
+else
+    echo -e "spark-submit was not found in ./spark-binaries/bin/. Please open your terminal and run ${RED} bash ./get-spark-submit-dependencies.sh${NC} from the projects home directory to get spark-submit."
+    exit 1
+fi
 
 minikube start
 eval $(minikube docker-env)
@@ -13,16 +24,13 @@ minikube addons enable ingress-dns
 # kubectl apply -f ./k8s/spark-driver-role.yaml
 # kubectl apply -f ./k8s/spark-driver-role-binding.yaml
 # --conf spark.kubernetes.authenticate.driver.serviceAccountName=spark-driver-account \
+
+kubectl delete clusterrolebinding default --ignore-not-found
 kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=default:default --namespace=default
 
 # # todo - get control pane address in variable
 kubectl cluster-info
 
-RED='\033[0;31m' 
-NC='\033[0m'
-echo -e "${RED}You will get an error if you didn't drop the Spark binaries in the project's home directory in 'spark-binaries'${NC}"
-
-# Make sure Spark binaries are in the project's root directory
 ./spark-binaries/bin/spark-submit \
     --master k8s://https://127.0.0.1:51950 \
     --deploy-mode cluster \

@@ -15,5 +15,4 @@ RUN pip install --no-cache-dir -r ./requirements.txt
 RUN echo ${SPARK_HOME}
 RUN pwd
 
-
 USER ${spark_uid}
