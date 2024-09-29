@@ -1,5 +1,5 @@
 notes.txt
 maven-dependencies/*
 !maven-dependencies/readme.md
-spark-binaries/*
-!spark-binaries/readme.md
+spark-submit-dependencies/*
+!spark-submit-dependencies/readme.md

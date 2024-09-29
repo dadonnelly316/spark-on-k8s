@@ -24,7 +24,6 @@
         <artifactId>iceberg-spark-runtime-3.5_2.12</artifactId>
         <version>1.5.0</version>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -37,9 +36,6 @@
                   <goals>
                       <goal>copy-dependencies</goal>
                   </goals>
-                  <!-- <configuration>
-                      <outputDirectory>./maven-dependencies</outputDirectory>
-                  </configuration> -->
               </execution>
           </executions>
       </plugin>

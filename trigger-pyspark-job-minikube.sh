@@ -4,10 +4,10 @@ set -e
 RED='\033[0;31m' 
 NC='\033[0m'
 
-if [ -e ./spark-binaries/bin/spark-submit ]; then
+if [ -e ./spark-submit-dependencies/bin/spark-submit ]; then
     echo "spark-submit was found!"
 else
-    echo -e "spark-submit was not found in ./spark-binaries/bin/. Please open your terminal and run ${RED} bash ./get-spark-submit-dependencies.sh${NC} from the projects home directory to get spark-submit."
+    echo -e "spark-submit was not found in ./spark-submit-dependencies/bin/. Please open your terminal and run ${RED} bash ./get-spark-submit-dependencies.sh${NC} from the projects home directory to get spark-submit."
     exit 1
 fi
 
@@ -31,7 +31,7 @@ kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=de
 # # todo - get control pane address in variable
 kubectl cluster-info
 
-./spark-binaries/bin/spark-submit \
+./spark-submit-dependencies/bin/spark-submit \
     --master k8s://https://127.0.0.1:51950 \
     --deploy-mode cluster \
     --name pyspark-job \

@@ -1,4 +1,4 @@
-FROM apache/spark:3.5.3-scala2.12-java17-python3-r-ubuntu
+FROM apache/spark:3.5.3-scala2.12-java17-python3-ubuntu
 
 ARG spark_uid=185
 USER 0
