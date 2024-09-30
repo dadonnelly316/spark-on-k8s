@@ -39,4 +39,10 @@ kubectl cluster-info
     --conf spark.executor.instances=2 \
     --conf spark.kubernetes.container.image=pyspark:latest \
     --conf spark.kubernetes.container.image.pullPolicy=Never \
+    --conf spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id \
+    --conf spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key \
+    --conf spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id \
+    --conf spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key \
     local:///opt/spark/work-dir/app-pyspark/main.py
+
+

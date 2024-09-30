@@ -9,7 +9,7 @@ COPY ./app-pyspark ./app-pyspark
 COPY ./maven-dependencies ${SPARK_HOME}/jars
 COPY ./requirements.txt .
 
-RUN pip install --no-cache-dir -r ./requirements.txt
+RUN pip install --upgrade --no-cache-dir -r ./requirements.txt
 
 # Must set progress=plain in docker build to see output
 RUN echo ${SPARK_HOME}
