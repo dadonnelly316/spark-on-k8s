@@ -1,0 +1,9 @@
+{
+    "python.analysis.extraPaths": [
+        "./spark-submit-dependencies/python"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true
+      }
+}
