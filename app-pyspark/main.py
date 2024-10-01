@@ -1,6 +1,10 @@
 from hadoop_config import export_hadoop_config
 from pyspark.sql import SparkSession
 from datetime import date, datetime
+import os
+
+# todo: better error handling if environ isn't found
+S3_BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
 
 
 def set_hadoop_config(spark_session: SparkSession) -> None:
@@ -25,6 +29,9 @@ def main() -> None:
             ],
             schema="a long, b double, c string, d date, e timestamp",
         )
+
+        output_folder = "spark_test"
+        df.write.parquet(f"s3a://{S3_BUCKET_NAME}/{output_folder}", mode="overwrite")
 
         df.show()
     finally:

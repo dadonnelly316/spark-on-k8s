@@ -11,7 +11,7 @@ else
     exit 1
 fi
 
-minikube start
+minikube start --cpus 2 --memory 5g
 eval $(minikube docker-env)
 
 bash build-pyspark.sh
@@ -35,14 +35,17 @@ kubectl cluster-info
     --master k8s://https://127.0.0.1:51950 \
     --deploy-mode cluster \
     --name pyspark-job \
-    --executor-memory 4G \
+    --driver-memory 2G \
+    --executor-memory 2G \
     --conf spark.executor.instances=2 \
     --conf spark.kubernetes.container.image=pyspark:latest \
     --conf spark.kubernetes.container.image.pullPolicy=Never \
     --conf spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id \
-    --conf spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key \
     --conf spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id \
+    --conf spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key \
     --conf spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key \
+    --conf spark.kubernetes.driver.secretKeyRef.S3_BUCKET_NAME=aws-login:s3-bucket-name \
+    --conf spark.kubernetes.executor.secretKeyRef.S3_BUCKET_NAME=aws-login:s3-bucket-name \
     local:///opt/spark/work-dir/app-pyspark/main.py
 
 
