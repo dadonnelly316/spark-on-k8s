@@ -15,6 +15,8 @@ minikube start --cpus 2 --memory 5g
 eval $(minikube docker-env)
 
 bash build-pyspark.sh
+# todo: need a better way to configure the image pull policy
+bash build-hive-metastore.sh
 
 minikube addons enable ingress
 minikube addons enable ingress-dns
@@ -24,6 +26,9 @@ minikube addons enable ingress-dns
 # kubectl apply -f ./k8s/spark-driver-role.yaml
 # kubectl apply -f ./k8s/spark-driver-role-binding.yaml
 # --conf spark.kubernetes.authenticate.driver.serviceAccountName=spark-driver-account \
+
+kubectl apply -f ./k8s/hive-metastore-deployment.yaml
+kubectl apply -f ./k8s/hive-metastore-service.yaml
 
 kubectl delete clusterrolebinding default --ignore-not-found
 kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=default:default --namespace=default

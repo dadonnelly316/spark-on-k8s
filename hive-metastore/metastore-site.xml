@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?><!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- if using EMR , provide json overrides instead- https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-hive-metastore-external.html -->
+<!--https://community.cloudera.com/t5/Support-Questions/Making-hive-default-to-s3/td-p/161968-->
+<configuration>
+
+<!--i actually read somewhere that warehouse sould be set in spark. but maybe it's still needed here too, that was for hive, not metastore-->
+    <property>
+        <name>metastore.thrift.uris</name>
+        <value>thrift://0.0.0.0:9083</value>
+        <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
+    </property>
+    <property>
+        <name>metastore.task.threads.always</name>
+        <value>org.apache.hadoop.hive.metastore.events.EventCleanerTask,org.apache.hadoop.hive.metastore.MaterializationsCacheCleanerTask</value>
+    </property>
+    <property>
+        <name>metastore.expression.proxy</name>
+        <value>org.apache.hadoop.hive.metastore.DefaultPartitionExpressionProxy</value>
+    </property>
+    <property>
+        <name>metastore.warehouse.dir</name>
+        <value>s3a://spark/warehouse/</value>
+    </property>
+    <property>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>org.postgresql.Driver</value>
+    </property>
+
+  <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>${env.POSTGRES_CONNECTION_URL}</value>
+  </property>
+    <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>hive</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionPassword</name>
+        <value>${env.POSTGRES_PASSWORD}</value>
+    </property>
+
+    <property>
+        <name>fs.s3a.access.key</name>
+        <value>${env.S3_KEY_ID}</value>
+    </property>
+    <property>
+        <name>fs.s3a.secret.key</name>
+        <value>${env.S3_KEY_SECRET}</value>
+    </property>
+    <property>
+        <name>fs.s3a.endpoint</name>
+        <value>s3.amazonaws.com</value>
+    </property>
+    <property>
+        <name>fs.s3a.path.style.access</name>
+        <value>true</value>
+    </property>
+
+</configuration>

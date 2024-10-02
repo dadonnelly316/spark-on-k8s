@@ -5,5 +5,7 @@ terraform init
 terraform plan
 
 echo "provisioning infrastructure"
-echo "yes" | terraform apply
+# echo "yes" | terraform apply
+
+terraform apply
 

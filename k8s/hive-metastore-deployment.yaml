@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metastore
+  labels:
+    app: hive-metastore
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hive-metastore
+  template:
+    metadata:
+      labels:
+        app: hive-metastore
+    spec:
+      containers:
+        - name: hive-metastore
+          image: hive-metastore:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 9083
+          env:
+            - name: POSTGRES_CONNECTION_URL
+              valueFrom:
+                secretKeyRef:
+                  name: hive-metastore-secrets
+                  key: postgres-connection-url
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hive-metastore-secrets
+                  key: postgres-password
+            - name: S3_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: hive-metastore-secrets
+                  key: s3-key-id
+            - name: S3_KEY_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: hive-metastore-secrets
+                  key: s3-key-secret
+
+            

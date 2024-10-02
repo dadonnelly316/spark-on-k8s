@@ -6,7 +6,7 @@ USER 0
 RUN apt-get update && apt-get upgrade -y
 
 COPY ./app-pyspark ./app-pyspark
-COPY ./maven-dependencies ${SPARK_HOME}/jars
+COPY ./maven-dependencies/spark ${SPARK_HOME}/jars
 COPY ./requirements.txt .
 
 RUN pip install --upgrade --no-cache-dir -r ./requirements.txt

@@ -24,6 +24,7 @@
         <artifactId>iceberg-spark-runtime-3.5_2.12</artifactId>
         <version>1.5.0</version>
     </dependency>
+        
   </dependencies>
 
   <build>
