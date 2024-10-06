@@ -18,9 +18,10 @@ def set_hadoop_config(spark_session: SparkSession) -> None:
 
 def main() -> None:
     spark = SparkSession.builder.getOrCreate()
-    set_hadoop_config(spark)
 
     try:
+        set_hadoop_config(spark)
+
         df = spark.createDataFrame(
             [
                 (1, 2.0, "string1", date(2000, 1, 1), datetime(2000, 1, 1, 12, 0)),
