@@ -1,15 +1,8 @@
 #!/bin/sh
 set -e
 
-RED='\033[0;31m' 
+YELLOW='\033[0;33m' 
 NC='\033[0m'
-
-if [ -e ./spark-submit-dependencies/bin/spark-submit ]; then
-    echo "spark-submit was found!"
-else
-    echo -e "spark-submit was not found in ./spark-submit-dependencies/bin/. Please open your terminal and run ${RED} bash ./get-spark-submit-dependencies.sh${NC} from the projects home directory to get spark-submit."
-    exit 1
-fi
 
 minikube start --cpus 4 --memory 7000
 eval $(minikube docker-env)
@@ -23,7 +16,6 @@ rm ./maven-dependencies/hive-metastore/*
 rm ./maven-dependencies/spark/*
 
 bash build-pyspark.sh
-# todo: need a better way to configure the image pull policy
 bash build-hive-metastore.sh
 
 minikube addons enable ingress
@@ -43,5 +35,7 @@ kubectl wait --for=condition=ready pod -l app=hive-metastore
 kubectl delete clusterrolebinding default --ignore-not-found
 kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=default:default --namespace=default
 
+echo -e "${YELLOW}Make sure the clusterIP of your K8s cluster is passed in the --master option of spark submit. Do not pass the control pane IP.${NC}"
+kubectl delete pod spark-submit --ignore-not-found
 kubectl apply -f ./k8s/spark-submit-pod.yaml
 # kubectl get event --namespace default --field-selector involvedObject.name=spark-submit

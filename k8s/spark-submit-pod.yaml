@@ -11,7 +11,7 @@ spec:
     command: [
       "/opt/spark/bin/spark-submit",
       "--master",
-      "k8s://10.96.0.1:443", # This is the clusterIP of the Kubernetes cluster, not the Control Pane IP"
+      "k8s://10.96.0.1:443", # This is the clusterIP of the Kubernetes cluster, not the Control Pane IP
       "--deploy-mode",
       "cluster",
       "--name",

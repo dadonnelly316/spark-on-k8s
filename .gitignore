@@ -1,7 +1,5 @@
 maven-dependencies/*
 !maven-dependencies/readme.md
-spark-submit-dependencies/*
-!spark-submit-dependencies/readme.md
 terraform-aws/.terraform*
 terraform-aws/terraform.tfstate*
 git-ignore
