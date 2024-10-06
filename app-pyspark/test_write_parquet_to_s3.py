@@ -1,4 +1,4 @@
-from hadoop_config import export_hadoop_config
+from config_hadoop import get_hadoop_s3a_client_aws_config
 from pyspark.sql import SparkSession
 from datetime import date, datetime
 import os
@@ -9,11 +9,11 @@ S3_BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
 
 def set_hadoop_config(spark_session: SparkSession) -> None:
 
-    aws_hadoop_config = export_hadoop_config()
+    s3a_hadoop_config = get_hadoop_s3a_client_aws_config()
     sc_hadoop_config = spark_session._jsc.hadoopConfiguration()
 
-    for hadoop_key, hadoop_value in aws_hadoop_config.items():
-        sc_hadoop_config.set(hadoop_key, hadoop_value)
+    for config_key, config_value in s3a_hadoop_config.items():
+        sc_hadoop_config.set(config_key, config_value)
 
 
 def main() -> None:

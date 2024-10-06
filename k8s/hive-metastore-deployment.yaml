@@ -32,15 +32,15 @@ spec:
                 secretKeyRef:
                   name: hive-metastore-secrets
                   key: postgres-password
-            - name: S3_KEY_ID
+            - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
                   name: hive-metastore-secrets
                   key: s3-key-id
-            - name: S3_KEY_SECRET
+            - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: hive-metastore-secrets
                   key: s3-key-secret
-
-            
+            - name: AWS_REGION
+              value: "us-east-1"

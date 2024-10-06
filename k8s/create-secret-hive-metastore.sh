@@ -4,6 +4,7 @@ set -e
 POSTGRES_CONN_ID=${1}
 POSTGRES_PASSWORD=${2}
 S3_KEY_ID=${3}
+S3_KEY_SECRET=${4}
 
 kubectl delete secret hive-metastore-secrets --ignore-not-found
 

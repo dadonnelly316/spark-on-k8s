@@ -35,7 +35,7 @@
     </property>
     <property>
         <name>metastore.warehouse.dir</name>
-        <value>s3a://spark/warehouse/</value>
+        <value>s3a://lakehouse-storage20240929210918549500000001/warehouse/</value>
     </property>
     <property>
         <name>javax.jdo.option.ConnectionDriverName</name>
@@ -58,19 +58,31 @@
 
     <property>
         <name>fs.s3a.access.key</name>
-        <value>${env.S3_KEY_ID}</value>
+        <value>${env.AWS_ACCESS_KEY_ID}</value>
     </property>
     <property>
         <name>fs.s3a.secret.key</name>
-        <value>${env.S3_KEY_SECRET}</value>
+        <value>${env.AWS_SECRET_ACCESS_KEY}</value>
     </property>
+
     <property>
         <name>fs.s3a.endpoint</name>
-        <value>s3.amazonaws.com</value>
+        <value>s3.amazonaws.com</value> 
     </property>
+
+    <property>
+        <name>fs.s3a.endpoint.region</name>
+        <value>us-east-1</value> 
+    </property>
+
     <property>
         <name>fs.s3a.path.style.access</name>
         <value>true</value>
     </property>
+    <property>
+        <name>fs.s3a.impl</name>
+        <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+    </property>
 
 </configuration>
+

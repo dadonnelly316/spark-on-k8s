@@ -16,3 +16,6 @@ RUN echo ${SPARK_HOME}
 RUN pwd
 
 USER ${spark_uid}
+
+
+# https://github.com/tabular-io/docker-spark-iceberg/blob/main/spark/Dockerfile

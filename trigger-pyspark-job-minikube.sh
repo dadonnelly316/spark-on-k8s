@@ -11,8 +11,16 @@ else
     exit 1
 fi
 
-minikube start --cpus 2 --memory 5g
+minikube start --cpus 4 --memory 7000
 eval $(minikube docker-env)
+
+kubectl config set-cluster minikube
+minikube config view vm-driver
+
+# minikube ssh -- docker system prune # run this if out of disk space
+
+rm ./maven-dependencies/hive-metastore/*
+rm ./maven-dependencies/spark/*
 
 bash build-pyspark.sh
 # todo: need a better way to configure the image pull policy
@@ -30,6 +38,8 @@ minikube addons enable ingress-dns
 kubectl apply -f ./k8s/hive-metastore-deployment.yaml
 kubectl apply -f ./k8s/hive-metastore-service.yaml
 
+kubectl wait --for=condition=ready pod -l app=hive-metastore
+
 kubectl delete clusterrolebinding default --ignore-not-found
 kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=default:default --namespace=default
 
@@ -37,12 +47,12 @@ kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=de
 kubectl cluster-info
 
 ./spark-submit-dependencies/bin/spark-submit \
-    --master k8s://https://127.0.0.1:51950 \
+    --master k8s://https://127.0.0.1:51020 \
     --deploy-mode cluster \
     --name pyspark-job \
     --driver-memory 2G \
     --executor-memory 2G \
-    --conf spark.executor.instances=2 \
+    --conf spark.executor.instances=1 \
     --conf spark.kubernetes.container.image=pyspark:latest \
     --conf spark.kubernetes.container.image.pullPolicy=Never \
     --conf spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id \
@@ -51,6 +61,6 @@ kubectl cluster-info
     --conf spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key \
     --conf spark.kubernetes.driver.secretKeyRef.S3_BUCKET_NAME=aws-login:s3-bucket-name \
     --conf spark.kubernetes.executor.secretKeyRef.S3_BUCKET_NAME=aws-login:s3-bucket-name \
-    local:///opt/spark/work-dir/app-pyspark/main.py
-
-
+    --conf spark.driver.extraJavaOptions=-Daws.region=us-east-1 \
+    --conf spark.executor.extraJavaOptions=-Daws.region=us-east-1 \
+    local:///opt/spark/work-dir/app-pyspark/test_write_iceberg_table.py
