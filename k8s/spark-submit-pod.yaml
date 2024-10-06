@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spark-submit
+spec:
+  containers:
+  - name: spark-submit-pyspark
+    image: pyspark:latest # todo - how to get spark-home var instead of hard-coding opt/spark/
+    imagePullPolicy: Never
+    command: [
+      "/opt/spark/bin/spark-submit",
+      "--master",
+      "k8s://10.96.0.1:443", # This is the clusterIP of the Kubernetes cluster, not the Control Pane IP"
+      "--deploy-mode",
+      "cluster",
+      "--name",
+      "pyspark-job",
+      "--driver-memory",
+      "2G",
+      "--executor-memory",
+      "2G",
+      "--conf",
+      "spark.executor.instances=1",
+      "--conf",
+      "spark.kubernetes.container.image=pyspark:latest",
+      "--conf",
+      "spark.kubernetes.container.image.pullPolicy=Never",
+      "--conf",
+      "spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id",
+      "--conf",
+      "spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id",
+      "--conf",
+      "spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key",
+      "--conf",
+      "spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key",
+      "--conf",
+      "spark.kubernetes.driver.secretKeyRef.S3_BUCKET_NAME=aws-login:s3-bucket-name",
+      "--conf",
+      "spark.kubernetes.executor.secretKeyRef.S3_BUCKET_NAME=aws-login:s3-bucket-name",
+      "--conf",
+      "spark.driver.extraJavaOptions=-Daws.region=us-east-1",
+      "--conf",
+      "spark.executor.extraJavaOptions=-Daws.region=us-east-1",
+      "local:///opt/spark/work-dir/app-pyspark/test_write_iceberg_table.py",
+    ]
+
