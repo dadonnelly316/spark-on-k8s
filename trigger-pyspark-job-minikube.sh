@@ -43,26 +43,5 @@ kubectl wait --for=condition=ready pod -l app=hive-metastore
 kubectl delete clusterrolebinding default --ignore-not-found
 kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=default:default --namespace=default
 
-# # todo - get control pane address in variable
-kubectl cluster-info
-
 kubectl apply -f ./k8s/spark-submit-pod.yaml
-
-# ./spark-submit-dependencies/bin/spark-submit \
-#     --master k8s://https://127.0.0.1:51020 \
-#     --deploy-mode cluster \
-#     --name pyspark-job \
-#     --driver-memory 2G \
-#     --executor-memory 2G \
-#     --conf spark.executor.instances=1 \
-#     --conf spark.kubernetes.container.image=pyspark:latest \
-#     --conf spark.kubernetes.container.image.pullPolicy=Never \
-#     --conf spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id \
-#     --conf spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID=aws-login:aws-access-key-id \
-#     --conf spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key \
-#     --conf spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY=aws-login:aws-secret-access-key \
-#     --conf spark.kubernetes.driver.secretKeyRef.S3_BUCKET_NAME=aws-login:s3-bucket-name \
-#     --conf spark.kubernetes.executor.secretKeyRef.S3_BUCKET_NAME=aws-login:s3-bucket-name \
-#     --conf spark.driver.extraJavaOptions=-Daws.region=us-east-1 \
-#     --conf spark.executor.extraJavaOptions=-Daws.region=us-east-1 \
-#     local:///opt/spark/work-dir/app-pyspark/test_write_iceberg_table.py
+# kubectl get event --namespace default --field-selector involvedObject.name=spark-submit

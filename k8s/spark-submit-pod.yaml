@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: spark-submit
 spec:
+  restartPolicy: OnFailure
   containers:
   - name: spark-submit-pyspark
     image: pyspark:latest # todo - how to get spark-home var instead of hard-coding opt/spark/
